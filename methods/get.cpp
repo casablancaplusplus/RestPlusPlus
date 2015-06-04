@@ -2,8 +2,29 @@
 
 
 #include "get.h"
-#include "../utils/utilities.h"
+// utility
+std::vector<std::string>    analyzeGetUrl(const std::string&   url)
+{
+    std::vector<std::string>    result;
+    std::string::size_type      pos = 0;
+    std::string::size_type      count;
 
+    while(1) 
+    {
+        pos = url.find('/',pos)+1;
+        count = url.find('/', pos);
+
+        if( count == std::basic_string<char>::npos) 
+        {
+            result.push_back(url.substr(pos, url.size()));
+            break;
+        }
+        else   
+            result.push_back(url.substr(pos, count-pos));
+    }
+
+    return result;
+}
 
 get::get(
         Wt::Dbo::SqlConnectionPool&     connectionPool,
@@ -35,7 +56,7 @@ void    get::operate() {
 
 void    get::getQuestionDetails() {
 
-    std::vector<std::string>    analyzedUrl = analyzeUrl(_request.pathInfo());
+    std::vector<std::string>    analyzedUrl = analyzeGetUrl(_request.pathInfo());
 
     PollSession     session(_connectionPool);
     Wt::Dbo::Transaction    t(session);

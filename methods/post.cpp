@@ -3,7 +3,29 @@
 
 
 #include "post.h"
+//utility
+std::vector<std::string>    analyzePostUrl(const std::string&   url)
+{
+    std::vector<std::string>    result;
+    std::string::size_type      pos = 0;
+    std::string::size_type      count;
 
+    while(1) 
+    {
+        pos = url.find('/',pos)+1;
+        count = url.find('/', pos);
+
+        if( count == std::basic_string<char>::npos) 
+        {
+            result.push_back(url.substr(pos, url.size()));
+            break;
+        }
+        else   
+            result.push_back(url.substr(pos, count-pos));
+    }
+
+    return result;
+}
 
 static int  count = 0;
 // debug function
@@ -48,10 +70,67 @@ void    post::operate() {
 }
 
 void    post::postVote() {
+    
+    std::vector<std::string>    analyzedUrl = analyzePostUrl(_request.pathInfo());
+
+    PollSession     session(_connectionPool);
+    Wt::Dbo::Transaction    t(session);
+
+    try {
+            int     question_id = std::stoi(analyzedUrl[1]);
+            int     target_choice_id   = std::stoi(analyzedUrl[3]);
+
+            Wt::Dbo::ptr<questions>     question_ptr =
+                session.find<questions>().where("id = ? ").bind(question_id);
+                
+            std::cout << "question id " << question_id << std::endl;
+            std::cout << "_______________________" << std::endl;
+            std::cout << "choice id " << target_choice_id << std::endl;
+            
+            typedef Wt::Dbo::collection<Wt::Dbo::ptr<choices> >     choiceColl;
+            //choiceColl     choice_collection = question_ptr-> Choices;
+            bool        voted = false;
+            for(choiceColl::const_iterator      it = question_ptr->Choices.begin();
+                                                it != question_ptr->Choices.end();
+                                                it++)
+            {
+                if((*it)->choice_id == target_choice_id){
+
+                    (*it).modify()->votes += 1;
+                    voted = true;
+                }
+            }
+            
+            if( voted ) {
+                _response.addHeader("Location","/questions/"+
+                        std::to_string(question_id));
+            }
+            else {
+                _response.setMimeType("application/json");
+                _response.out() << "{\n"
+                                << "    \"erro\":\"No such choice\"\n"
+                                << "}\n";
+            }
+    }
+    catch(Wt::Dbo::Exception&   e) {
+        _response.setMimeType("application/json");
+        _response.out () << e.what() << std::endl;
+    }
+    catch(std::exception&       e) {
+        _response.setMimeType("application/json");
+        _response.out() << e.what() << std::endl;
+    }
+    t.commit();
     std::cout <<" _____________________ " << std::endl;
     std::cout << " You just voted on a choice " << std::endl;
     std::cout << "_____________________ " << std::endl;
+
 }
+
+
+
+
+
 
 void    post::postNewQuestion() {
     
