@@ -1,0 +1,3 @@
+the way things are structured in this folder : 
+
+--> each .cpp file corresponds to a utility function in utilities.h

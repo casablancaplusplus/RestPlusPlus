@@ -1,0 +1,15 @@
+--> the operation class should have the virtual methods and properties that
+    all of the http method classes have in common so that on can use this class 
+    pollymorphically
+
+
+
+--> the regex patterns that will be created statically only once when the application
+    runs will map to class methods in each http method class, indicating and operation.
+    since the operation methods are different for each method class, they can't declared in the base class
+    and should be part of the method classes specialization.
+
+
+--> the base class should include a dbSession property as well.
+
+--> generate new responses
