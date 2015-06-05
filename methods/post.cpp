@@ -216,7 +216,7 @@ void    post::postNewQuestion() {
                 }
                 
                 // this line of code was moved 
-                question_ptr.modify()->url = "/questions/"+
+                question_ptr.modify()->url = "/api/questions/"+
                     std::to_string(thisQuestionsId);
 
                 typedef std::vector<choices*>     choiceVec;
@@ -236,7 +236,7 @@ void    post::postNewQuestion() {
                     std::string cId = std::to_string(choice_id);
                     std::string    id = std::to_string(thisQuestionsId); 
                     
-                    choice_-> url = "/questions/"+id+"/choices/"+cId;
+                    choice_-> url = "/api/questions/"+id+"/choices/"+cId;
                     choice_-> votes = 0;
                     choice_-> choice_id = choice_id; choice_id++;
                     choice_-> question = question_ptr;
