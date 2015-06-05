@@ -49,6 +49,10 @@ void    get::operate() {
 
         getQuestionCollection();
     }
+    else if(std::regex_match(_url.begin(), _url.end(), _getEntryPoint)) {
+
+        getEntryPoint();
+    }
     else {
         std::cout << "_____ NOT A GOOD GET ______ " << std::endl;
     }
@@ -185,9 +189,19 @@ void    get::getQuestionCollection() {
     std::cout << " You requested a question collection " << std::endl;
     std::cout << "__________________________ " << std::endl;
 }
+
+void    get::getEntryPoint() {
+    _response.setMimeType("application/json");
+    _response.out() << "{\n"
+                    << "    \"questions_url\":\"/api/questions\"\n"
+                    << "}\n";
+}
 // TODO : improve the patterns . so far they don't detect zeros
 std::regex  get::_getQuestionDetails =        std::regex(
         "/questions/[1-9]+",                  std::regex_constants::icase);
 
 std::regex  get::_getQuestionCollection =     std::regex(
         "/questions",           std::regex_constants::icase);
+
+std::regex  get::_getEntryPoint =   std::regex(
+        "/",    std::regex_constants::icase);

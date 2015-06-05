@@ -36,12 +36,16 @@ class get   :   public  operation {
         // url pattern : /questions{?page}
         void    getQuestionCollection();
 
+        // returns the entry point in case /api/ requested
+        void    getEntryPoint();
+
 
     private:
         // regex objects the help us determine what member function
         // to call for a certain url
         static  std::regex  _getQuestionDetails;
         static  std::regex  _getQuestionCollection;
+        static  std::regex  _getEntryPoint;
 };
 
 #endif
