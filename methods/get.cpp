@@ -125,9 +125,15 @@ void    get::getQuestionCollection() {
    
     PollSession     session(_connectionPool);
     Wt::Dbo::Transaction    t(session);
-
+//
+//debug code :
+//
+    std::cout << "***********************" << std::endl;
+    std::cout << _request.queryString() << std::endl;
+    std::cout << " ******************** " << std::endl;
     try {
-
+        if(_request.getParameter("page") == 0) 
+            throw "You didn't provide a page number";
         const   std::string     page = *(_request.getParameter("page"));
         std::string     most  = std::to_string((std::stoi(page)*10)+1);
         std::string     least = std::to_string(1);
