@@ -192,10 +192,7 @@ void    get::getQuestionCollection() {
     catch(...) { out << "This is an exception of unkown type. deal with it later.";}
         
     std::cout << "__________________________ " << std::endl;
-    std::cout << " You requested a question collection " << std::endl;
-    std::cout << "__________________________ " << std::endl;
-}
-
+    std::cout << " You requested a question collection " << std::endl; std::cout << "__________________________ " << std::endl; } 
 void    get::getEntryPoint() {
     _response.setMimeType("application/json");
     _response.out() << "{\n"
@@ -204,7 +201,7 @@ void    get::getEntryPoint() {
 }
 // TODO : improve the patterns . so far they don't detect zeros
 std::regex  get::_getQuestionDetails =        std::regex(
-        "/questions/[1-9]+",                  std::regex_constants::icase);
+        "/questions/[1-9][0-9]*",                  std::regex_constants::icase);
 
 std::regex  get::_getQuestionCollection =     std::regex(
         "/questions",           std::regex_constants::icase);

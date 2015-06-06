@@ -36,7 +36,8 @@ void    dbug() {
 
 // TODO : improve the patterns
 std::regex  post::_postVote =               std::regex(
-        "/questions/[0-9]+/choices/[0-9]+", std::regex_constants::icase);
+        "/questions/[1-9][0-9]*/choices/[1-9][0-9]*", 
+        std::regex_constants::icase);
 
 std::regex  post::_postNewQuestion =        std::regex(
         "/questions",                       std::regex_constants::icase);
