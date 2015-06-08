@@ -179,6 +179,10 @@ void    get::getQuestionCollection() {
             else    out << ",";
         }
         out << "]" << std::endl;
+        
+        int next = std::stoi(page)+1;
+        _response.addHeader("Link","</api/questions?page="+std::to_string(next)
+                +">; rel=\"next\"");
 
 
 
