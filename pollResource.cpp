@@ -21,10 +21,12 @@ void    pollResource::handleRequest (
 
     else if ( request.method() == "POST" )  
             initiatePost(response, request);
-    else if ( request.method() == "HEAD" )
-        std::cout << "It works with HEAD " << std::endl;
-    else 
+    else {
+
         std::cout << "_____NOT IMPLEMENTED_____" << std::endl;
+        response.setStatus(501);
+    }
+
     
 }
 

@@ -19,19 +19,27 @@ int main( int argc, char ** argv) {
 
             pollResource res(*pollDb);
             server.addResource(&res, "/api");
-            
-            if(server.start()) {
+           
+            try {
+                server.start();
                 Wt::WServer::waitForShutdown();
                 server.stop();
-            }else{
+            } catch(Wt::WServer::Exception&     e) {
+                std::cout << e.what() << std::endl;
                 return 1;
             }
+
             return 0;
         } catch( Wt::WServer::Exception& e) {
+            std::cout << e.what() << std::endl;
             return 1;
         } catch( std::exception& e) {
+            std::cout << e.what() << std::endl;
             return 1;
         }
-    }catch(...) {}
+    }catch(Wt::WServer::Exception&  e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
 }
 
